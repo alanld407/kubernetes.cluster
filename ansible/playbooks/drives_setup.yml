@@ -1,0 +1,36 @@
+---
+- hosts: kubernetes
+  remote_user: root
+  tasks:
+    - name: install rhel epel-release
+      yum:
+        name: epel-release
+    - name: install the ntfs disk driver
+      yum:
+        name: ntfs-3g
+    - name: make directory to mount ntfs drive
+      file: 
+        path: /disk1/tmp
+        state: directory
+        mode: '0755'
+    - name: list all drives
+      command: parted -l
+    - name: mount the file system
+      mount:
+        path: /disk1/tmp
+        src: /dev/sda1
+        opts: defaults
+        state: mounted
+        fstype: ntfs-3g
+    - name: check the mounted directory
+      command: df -h
+    - name: list the mounted directory
+      command: ls /disk1/tmp
+
+# https://www.techotopia.com/index.php/Adding_a_New_Disk_Drive_to_a_CentOS_System
+# https://www.howtoforge.com/tutorial/mount-ntfs-centos/
+# mkdir /disk1/tmp
+# mount -t ntfs-3g /dev/sdb1 /disk1/tmp
+# nano /etc/fstab
+# And add the line:
+# /dev/sdb1 /mnt/win ntfs-3g defaults 0 0
