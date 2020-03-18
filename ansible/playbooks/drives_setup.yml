@@ -10,14 +10,14 @@
         name: ntfs-3g
     - name: make directory to mount ntfs drive
       file: 
-        path: /disk1/tmp
+        path: /disk1
         state: directory
         mode: '0755'
     - name: list all drives
       command: parted -l
     - name: mount the file system
       mount:
-        path: /disk1/tmp
+        path: /disk1
         src: /dev/sda1
         opts: defaults
         state: mounted
@@ -25,12 +25,12 @@
     - name: check the mounted directory
       command: df -h
     - name: list the mounted directory
-      command: ls /disk1/tmp
+      command: ls /disk1
 
 # https://www.techotopia.com/index.php/Adding_a_New_Disk_Drive_to_a_CentOS_System
 # https://www.howtoforge.com/tutorial/mount-ntfs-centos/
-# mkdir /disk1/tmp
-# mount -t ntfs-3g /dev/sdb1 /disk1/tmp
-# nano /etc/fstab
+# mkdir /disk1
+# mount -t ntfs-3g /dev/sdb1 /disk1
+# vi /etc/fstab
 # And add the line:
-# /dev/sdb1 /mnt/win ntfs-3g defaults 0 0
+# /dev/sdb1 /disk1 ntfs-3g defaults 0 0
