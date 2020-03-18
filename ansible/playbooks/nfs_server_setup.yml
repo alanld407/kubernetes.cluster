@@ -5,16 +5,7 @@
     - name: install nfs-utils
       yum:
         name: nfs-utils
-    # - name: make directory to mount nfs drive
-    #   file: 
-    #     path: /mnt/nfs/home
-    #     state: directory
-    #     mode: '0755'
-    # - name: make directory to mount nfs drive
-    #   file: 
-    #     path: /mnt/nfs/var
-    #     state: directory
-    #     mode: '0755'
+
     - name: make directory to mount nfs drive
       file: 
         path: /mnt/nfs
@@ -50,10 +41,21 @@
     # sudo vi /etc/fstab
     # /disk1    /mnt/nfs/disk1  bind   0   0
 
+    - name: Add nfs mounts to the fstab for the server
+      lineinfile:
+        path: /etc/fstab
+        line: /disk1 /mnt/nfs/disk1 none bind 0 0
+        create: yes
+
     # - name: export the directories for nfs
     #   nfs_exports: { "/home *(rw,sync,no_root_squash)" }
     # sudo vi /etc/exports
     # /mnt/nfs            10.176.80.0/24(rw,sync,no_root_squash,no_subtree_check,cros,fsid=0)
+    - name: Add nfs mounts to the fstab for the server
+      lineinfile:
+        path: /etc/exports
+        line: /mnt/nfs            10.176.80.0/24(rw,sync,no_subtree_check)
+        create: yes
 
     - name: export nfs directories
       command: exportfs -a

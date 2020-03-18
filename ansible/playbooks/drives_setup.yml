@@ -22,6 +22,19 @@
         opts: defaults
         state: mounted
         fstype: ntfs-3g
+
+    - name: Add mounts to the fstab for the block device
+      lineinfile:
+        path: /etc/fstab
+        line: /dev/sda1 /disk1 ntfs-3g defaults 0 0
+        create: yes
+
+    - name: Add nfs mounts to the fstab for the server
+      lineinfile:
+        path: /etc/exports
+        line: /disk1              10.176.80.0/24(rw,sync,no_subtree_check)
+        create: yes
+
     - name: check the mounted directory
       command: df -h
     - name: list the mounted directory

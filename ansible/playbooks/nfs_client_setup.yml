@@ -13,12 +13,12 @@
         mode: '0755'
 
     - name: check the mounted directory
-      command: 
+      shell: 
         cmd: mount -t nfs -o vers=4 kubernetes:/mnt/nfs /mnt/nfs | /bin/true
         warn: false
 
     - name: check the mounted directory
-      command: 
+      shell: 
         cmd: mount -t nfs -o vers=4 kubernetes:/disk1 /disk1 | /bin/true
         warn: false
 
@@ -26,6 +26,17 @@
     #   /etc/fstab: { "/home *(rw,sync,no_root_squash)" }
     # kubernetes:/mnt/nfs /mnt/nfs nfs defaults,timeo=900,retrans=5,_netdev   0 0
     # kubernetes:/disk1 /mnt/nfs/disk1 nfs defaults,timeo=900,retrans=5,_netdev   0 0
+
+    - name: Add nfs mounts to the fstab for the client
+      lineinfile:
+        path: /etc/fstab
+        line: kubernetes:/mnt/nfs /mnt/nfs nfs defaults,timeo=900,retrans=5,_netdev   0 0
+        create: yes
+    - name: Add nfs mounts to the fstab for the client
+      lineinfile:
+        path: /etc/fstab
+        line: kubernetes:/disk1 /mnt/nfs/disk1 nfs defaults,timeo=900,retrans=5,_netdev   0 0
+        create: yes
 
     - name: check the mounted directory
       command: df -h
