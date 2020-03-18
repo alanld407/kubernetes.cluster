@@ -5,17 +5,22 @@
     - name: install nfs-utils
       yum:
         name: nfs-utils
+    # - name: make directory to mount nfs drive
+    #   file: 
+    #     path: /mnt/nfs/home
+    #     state: directory
+    #     mode: '0755'
+    # - name: make directory to mount nfs drive
+    #   file: 
+    #     path: /mnt/nfs/var
+    #     state: directory
+    #     mode: '0755'
     - name: make directory to mount nfs drive
       file: 
-        path: /mnt/nfs/home
+        path: /mnt/nfs
         state: directory
         mode: '0755'
-        # owner: nfsnobody:nfsnobody
-    - name: make directory to mount nfs drive
-      file: 
-        path: /mnt/nfs/var
-        state: directory
-        mode: '0755'
+
     - name: Start service nfs-server, if not started
       service:
         name: nfs-server
@@ -26,30 +31,29 @@
         name: nfs-server
         enabled: yes
 
-    # - name: check the mounted directory
-    #   command: 
-    #     cmd: mount --bind /home /mnt/nfs/home | /bin/true
-    #     warn: false
+    - name: check the mounted directory
+      command: 
+        cmd: mount --bind /home /mnt/nfs | /bin/true
+        warn: false
 
-    # - name: check the mounted directory
-    #   command: 
-    #     cmd: mount --bind /mnt/nfs /mnt/nfs/var | /bin/true
-    #     warn: false
+    - name: make directory to mount nfs drive
+      file: 
+        path: /mnt/nfs/disk1
+        state: directory
+        mode: '0755'
 
-    # sudo mount --bind /home /mnt/nfs/home
-    # sudo mount --bind /mnt/nfs /mnt/nfs/var
+    - name: link block device to the nfs mount
+      command: 
+        cmd: mount --bind /disk1 /mnt/nfs/disk1
+        warn: false
 
     # sudo vi /etc/fstab
-    # /home         /mnt/nfs/home none   bind   0   0
-    # /mnt/nfs      /mnt/nfs/var  none   bind   0   0
+    # /disk1    /mnt/nfs/disk1  bind   0   0
 
     # - name: export the directories for nfs
     #   nfs_exports: { "/home *(rw,sync,no_root_squash)" }
     # sudo vi /etc/exports
-
-    # /mnt/nfs            10.176.80.0/24(rw,sync,no_root_squash,no_subtree_check,crossmnt,fsid=0)
-    # /mnt/nfs/home       10.176.80.0/24(rw,sync,no_root_squash,no_subtree_check)
-    # /mnt/nfs/var        10.176.80.101/24(rw,sync,no_subtree_check)
+    # /mnt/nfs            10.176.80.0/24(rw,sync,no_root_squash,no_subtree_check,cros,fsid=0)
 
     - name: export nfs directories
       command: exportfs -a

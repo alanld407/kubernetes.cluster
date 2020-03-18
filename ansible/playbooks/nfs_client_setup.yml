@@ -5,32 +5,27 @@
     - name: install nfs-utils
       yum:
         name: nfs-utils
-    - name: make directory to mount nfs drive
-      file: 
-        path: /mnt/nfs/home
-        state: directory
-        mode: '0755'
 
     - name: make directory to mount nfs drive
       file: 
-        path: /mnt/nfs/var
+        path: /mnt/nfs
         state: directory
         mode: '0755'
 
     - name: check the mounted directory
       command: 
-        cmd: mount -t nfs -o vers=4 kubernetes:/home /mnt/nfs/home | /bin/true
+        cmd: mount -t nfs -o vers=4 kubernetes:/mnt/nfs /mnt/nfs | /bin/true
         warn: false
 
     - name: check the mounted directory
       command: 
-        cmd: mount -t nfs -o vers=4 kubernetes:/mnt/nfs /mnt/nfs/var | /bin/true
+        cmd: mount -t nfs -o vers=4 kubernetes:/disk1 /disk1 | /bin/true
         warn: false
 
     # - name: mount the directories for nfs
     #   /etc/fstab: { "/home *(rw,sync,no_root_squash)" }
-    # kubernetes:/home /mnt/nfs/home nfs defaults,timeo=900,retrans=5,_netdev   0 0
-    # kubernetes:/mnt/nfs /mnt/nfs/var nfs defaults,timeo=900,retrans=5,_netdev   0 0
+    # kubernetes:/mnt/nfs /mnt/nfs nfs defaults,timeo=900,retrans=5,_netdev   0 0
+    # kubernetes:/disk1 /mnt/nfs/disk1 nfs defaults,timeo=900,retrans=5,_netdev   0 0
 
     - name: check the mounted directory
       command: df -h
@@ -39,10 +34,9 @@
 # https://www.howtoforge.com/tutorial/setting-up-an-nfs-server-and-client-on-centos-7/
 
 ##Client side
-# mkdir -p /mnt/nfs/home
-# mkdir -p /mnt/nfs/var
+# mkdir -p /mnt/nfs/
+# mkdir -p /disk1
 # Afterwards, we can mount them as follows:
-# mount 192.168.1.100:/home /mnt/nfs/home
-# mount 192.168.1.100:/mnt/nfs /mnt/nfs/var
+# mount kubernetes:/mnt/nfs /mnt/nfs
 # You should now see the two NFS shares in the outputs of
 # df -h
