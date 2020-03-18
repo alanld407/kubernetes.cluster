@@ -1,0 +1,9 @@
+mail.yahoo.com
+
+[master]
+kubernetes
+
+[workers]
+worker-e21b7d
+worker-e21b7d
+

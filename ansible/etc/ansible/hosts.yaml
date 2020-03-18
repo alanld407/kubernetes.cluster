@@ -1,0 +1,10 @@
+all:
+  hosts:
+    mail.example.com:
+  children:
+    master:
+      hosts:
+	kubernetes
+    workers:
+      hosts:
+	worker-e21b7d:
