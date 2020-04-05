@@ -14,10 +14,11 @@ ssh-copy-id root@worker-e09a81
 Add hosts to the local hosts file
 
 Optionally edit the
-
+```
 /etc/ansible/hosts
 
 kubernetes ansible_user=root
 worker-37ca16 ansible_user=root
 worker-e21b7d ansible_user=root
 worker-e09a81 ansible_user=root
+```
