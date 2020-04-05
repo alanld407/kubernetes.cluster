@@ -1,0 +1,25 @@
+---
+- hosts: kubernetes
+  remote_user: root
+  tasks:
+    - name: Turn off hugepages
+      shell:
+        cmd: echo never > /sys/kernel/mm/transparent_hugepage/enabled
+        warn: false
+    - name: Turn off hugepages
+      lineinfile:
+        path: /etc/rc.local
+        line: echo never > /sys/kernel/mm/transparent_hugepage/enabled
+        create: yes
+    - name: Ensure group "nogroup" exists
+      group:
+        name: nogroup
+        gid: 1001
+        state: present
+
+    - name: Add the user 'nobody' with a specific uid and a primary group of 'nogroup'
+      user:
+        name: nobody
+        comment: app user for k8s
+        uid: 1001
+        group: nogroup
