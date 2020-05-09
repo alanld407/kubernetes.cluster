@@ -51,12 +51,17 @@
     #   nfs_exports: { "/home *(rw,sync,no_root_squash)" }
     # sudo vi /etc/exports
     # /mnt/nfs            10.176.80.0/24(rw,sync,no_root_squash,no_subtree_check,cros,fsid=0)
-    - name: Add nfs mounts to the fstab for the server
+    - name: Add nfs mounts to the exports for the server
       lineinfile:
         path: /etc/exports
         line: /mnt/nfs            10.176.80.0/24(rw,sync,no_subtree_check)
         create: yes
-
+    - name: Add nfs mounts to the exports for the server
+      lineinfile:
+        path: /etc/exports
+        line: /disk1            10.176.80.0/24(rw,sync,no_subtree_check)
+        # (rw,root_squash,no_wdelay)
+        create: yes
     - name: export nfs directories
       command: exportfs -a
 

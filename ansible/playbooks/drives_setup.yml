@@ -19,20 +19,20 @@
       mount:
         path: /disk1
         src: /dev/sda1
-        opts: defaults
+        opts: default
         state: mounted
-        fstype: ntfs-3g
+        fstype: ext4
 
     - name: Add mounts to the fstab for the block device
       lineinfile:
         path: /etc/fstab
-        line: /dev/sda1 /disk1 ntfs-3g defaults 0 0
+        line: UUID=c04fa2cb-71cd-40d0-baaa-8b2bc7cd70cf /disk1  ext4    defaults        1 1
         create: yes
 
     - name: Add nfs mounts to the fstab for the server
       lineinfile:
         path: /etc/exports
-        line: /disk1              10.176.80.0/24(rw,sync,no_subtree_check)
+        line: /disk1              10.176.80.0/24(rw,insecure,sync,no_subtree_check,no_root_squash)
         create: yes
 
     - name: check the mounted directory

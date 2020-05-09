@@ -11,4 +11,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/nfs/disk1/kubernetes/data"
+    path: "/disk1/kubernetes/data"

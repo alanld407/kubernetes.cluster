@@ -1,5 +1,5 @@
 ---
-- hosts: worker-37ca16, worker-e21b7d
+- hosts: worker-37ca16, worker-e21b7d, worker-2194b5
   remote_user: root
   tasks:
     - name: install nfs-utils
@@ -35,7 +35,7 @@
     - name: Add nfs mounts to the fstab for the client
       lineinfile:
         path: /etc/fstab
-        line: kubernetes:/disk1 /mnt/nfs/disk1 nfs defaults,timeo=900,retrans=5,_netdev   0 0
+        line: kubernetes:/disk1 /disk1 nfs defaults,timeo=900,retrans=5,_netdev   0 0
         create: yes
 
     - name: check the mounted directory
